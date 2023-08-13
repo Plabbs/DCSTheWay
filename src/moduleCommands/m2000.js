@@ -10,10 +10,10 @@ class m2000 {
         8: 3591,
         9: 3592,
         0: 3593,
-        Parameter: 3574,
         BAD: 3576,
         INS: 3596,
         NextWP: 3110,
+        ParamSelector: 3574,
         PREP: 3570,
     };
     static #parameter = {
@@ -32,35 +32,34 @@ class m2000 {
     static #codesPayload = [];
 
     static #addButtonCode(code) {
-        this.#codesPayload.push(
-            {
-                device: 9,
-                code: code,
-                delay: 100,
-                activate: 1,
-                addDepress: "true",
-            } );
+        this.#codesPayload.push({
+            device: 9,
+            code: code,
+            delay: 100,
+            activate: 1,
+            addDepress: "true",
+        });
     }
 
     static #addParamSelectorCode(position) {
-        this.#codesPayload.push(
-            {
-                device: 9,
-                code: this.#kuKeycodes.Parameter,
-                delay: 100,
-                activate: position,
-                addDepress: "false",
-            } );
+        this.#codesPayload.push({
+            device: 9,
+            code: this.#kuKeycodes.ParamSelector,
+            delay: 100,
+            activate: position,
+            addDepress: "false",
+        });
     }
 
-    static #addKeyboardCode(character) {
-        const characterCode = this.#kuKeycodes[character.toLowerCase()];
-        if (characterCode !== undefined)
-            this.#addButtonCode(characterCode);
+    static #addNumpadCodes(numString) {
+        for (let i = 0; i < numString.length; i++) {
+            const characterCode = this.#kuKeycodes[numString.charAt(i).toLowerCase()];
+            if (characterCode !== undefined) this.#addButtonCode(characterCode);
+        }
     }
 
     static #createWaypoint(waypoint) {
-        // Parameter selector - Long/Lat
+        // Parameter selector - Lat/lonG
         this.#addParamSelectorCode(this.#parameter.L_G);
         // "Next Waypoint Button"
         this.#addButtonCode(this.#kuKeycodes.NextWP);
@@ -68,70 +67,55 @@ class m2000 {
         this.#addButtonCode(this.#kuKeycodes.PREP);
         this.#addButtonCode(this.#kuKeycodes.PREP);
         // "1" (for left field "Longtitude")
-        this.#addKeyboardCode('1');
-        
+        this.#addNumpadCodes("1");
+
         //Type hemisphere
         if (waypoint.latHem === "N") {
-            // "2" for N
-            this.#addKeyboardCode('2');
+            this.#addNumpadCodes("2");
         } else {
-            // "8" for S
-            this.#addKeyboardCode('8');
+            this.#addNumpadCodes("8");
         }
-        //type latitude
-        for (let i = 0; i < waypoint.lat.length; i++) {
-            this.#addKeyboardCode(waypoint.lat.charAt(i));
-        }
-        // INS
+        //type latitude + INS
+        this.#addNumpadCodes(waypoint.lat);
         this.#addButtonCode(this.#kuKeycodes.INS);
         // "3" (for right field Longtitude)
-        this.#addKeyboardCode('3');
+        this.#addNumpadCodes("3");
         //Type E/W hemisphere
         if (waypoint.longHem === "E") {
-            // 6 (East)
-            this.#addKeyboardCode('6');
+            this.#addNumpadCodes("6");
         } else {
-            // 4 (West)
-            this.#addKeyboardCode('4');
+            this.#addNumpadCodes("4");
         }
-        //type longtitude value
-        for (let i = 0; i < waypoint.long.length; i++) {
-            this.#addKeyboardCode(waypoint.long.charAt(i));
-        }
-        // INS
+        //type longtitude value + INS
+        this.#addNumpadCodes(waypoint.long);
         this.#addButtonCode(this.#kuKeycodes.INS);
 
         // Parameter selector "ALT"
         this.#addParamSelectorCode(this.#parameter.ALT);
         // 1 - Feet
-        this.#addKeyboardCode('1');
+        this.#addNumpadCodes("1");
         // 1 - Positive
-        this.#addKeyboardCode('1');
+        this.#addNumpadCodes("1");
 
-        //type elevation
-        for (let i = 0; i < waypoint.elev.length; i++) {
-            this.#addKeyboardCode(waypoint.elev.charAt(i));
-        }
-        // INS
+        //type elevation + INS
+        this.#addNumpadCodes(waypoint.elev);
         this.#addButtonCode(this.#kuKeycodes.INS);
     }
 
     static #addDesiredHeading(degreesTxt) {
         let degreesOut = "";
-        // Parse the degrees text and convert to output format 0000 where last digit is a decimal
+        // Convert degrees text to output format 0000 where last digit is a decimal
         if (degreesTxt.length === 4) {
             degreesOut = degreesTxt;
         } else {
-            degreesOut = this.#formatNumber(parseFloat(degreesTxt),4,1);
+            degreesOut = parseFloat(degreesTxt).toFixed(1).replace(".","").padStart(4,"0");
         }
         // Set Parameter RD/TD   (Route désirée / Temps désiré)
         this.#addParamSelectorCode(this.#parameter.RD_TD);
         // 1 - Left field (Heading value)
-        this.#addKeyboardCode('1');
-        // Type the number
-        for (let i = 0; i < degreesOut.length; i++) {
-            this.#addKeyboardCode(degreesOut.charAt(i));
-        }
+        this.#addNumpadCodes("1");
+        // Type the number + INS
+        this.#addNumpadCodes(degreesOut);
         this.#addButtonCode(this.#kuKeycodes.INS);
     }
 
@@ -139,61 +123,69 @@ class m2000 {
         return degrees * (Math.PI / 180);
     }
 
-    static #toDegrees(radians) {
-        return radians * (180 / Math.PI);
-    }
+    static #parseLatLong(value, hemisphere) {
+        let degrees, minutes = 0;
 
-    static #parseLatLong(value) {
-        const parts = value.split(".");
-        if (parts.length !== 3) {
-            throw new Error("Invalid format for latitude or longitude");
+        // Check if value is a string
+        if (typeof value === "string") {
+            const parts = value.split(".");
+            if (parts.length === 3) {
+                degrees = parseFloat(parts[0]);
+                minutes = parseFloat(parts[1] + "." + parts[2]);
+                degrees = degrees + minutes / 60;
+            } else if (parts.length === 2) {
+                degrees = parseFloat(value);
+            } else {
+                throw new Error("Invalid format for latitude or longitude");
+            }
         }
-        const degrees = parseFloat(parts[0]);
-        const minutes = parseFloat(parts[1] + "." + parts[2]);
-        return this.#toRadians(degrees + minutes / 60);
-    }
-
-    static #formatNumber(num, totalPlaces, decimalPlaces) {
-        let formatted = num.toFixed(decimalPlaces).replace(".", "");
-        while (formatted.length < totalPlaces) {
-            formatted = "0" + formatted;
+        // Check if value is a number
+        else if (typeof value === "number") {
+            degrees = value;
+        } else {
+            throw new Error("Invalid type for latitude or longitude");
         }
-        return formatted;
+
+        let radians = this.#toRadians(degrees);
+        return hemisphere === 'S' || hemisphere === 'W' ? -radians : radians;
     }
 
-	static #haversineDistance(lat1, long1, lat2, long2) {
-        const EARTH_RADIUS = 6371;  // Earth's mean radius in kilometers
-		let deltaLat = lat2 - lat1;
-		let deltaLong = long2 - long1;
+    static #haversineDistance(lat1, long1, lat2, long2) {
+        const EARTH_RADIUS = 6371e3; // Earth's mean radius in meters
+        let deltaLat = lat2 - lat1;
+        let deltaLong = long2 - long1;
 
-		// Because Caucasus map projection seems to be f*** up it must be detected and adjusted
-		// N 40 - 45.38 and E28 - E46
-        if(lat1 > 0.6981317 && lat1 < 0.79645 && long1 > 0.48869 && long1 < 0.802851) {
-			deltaLat = deltaLat * 1.00535;
-			deltaLong = deltaLong * 1.01043;
-		}
+        // Because of Caucasus map projection there must be an adjustment to the distances so that
+        // they match the distance-per-degree on the F10 map.  Since I don't know exactly how the
+        // projection formula works, I estimate rough multiplication factors per latitude and longtitude
+        // derived by taking measurements on the F10 map compared with calculated distances.
+        // Map boundary: N 40 - 45.38 and E28 - E46
+        if (lat1 > 0.6981317 && lat1 < 0.79645 && long1 > 0.48869 && long1 < 0.802851) {
+            deltaLat = deltaLat * 1.006;
+            deltaLong = deltaLong * 1.01;
+        }
 
-		const a = Math.pow(Math.sin(deltaLat / 2), 2) + 
+        const a = Math.pow(Math.sin(deltaLat / 2), 2) +
                   Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLong / 2), 2);
-		const c = 2 * Math.atan(Math.sqrt(a));
-		
-		return EARTH_RADIUS * c * 1000;
-	}
-	
+        const c = 2 * Math.atan(Math.sqrt(a));
+
+        return EARTH_RADIUS * c;
+    }
+
     static #getWPDeltaMeters(waypoint1, waypoint2) {
-
         // Convert lat/long to radians
-        let lat1 = this.#parseLatLong(waypoint1.lat);
-        let long1 = this.#parseLatLong(waypoint1.long);
-        let lat2 = this.#parseLatLong(waypoint2.lat);
-        let long2 = this.#parseLatLong(waypoint2.long);
+        let lat1 = this.#parseLatLong(waypoint1.lat, waypoint1.latHem);
+        let long1 = this.#parseLatLong(waypoint1.long, waypoint1.longHem);
+        let lat2 = this.#parseLatLong(waypoint2.lat, waypoint2.latHem);
+        let long2 = this.#parseLatLong(waypoint2.long, waypoint2.longHem);
 
-		// Calculate N/S component
-		let latDistance = this.#haversineDistance(lat1, long1, lat2, long1);
+        // Calculate N/S component and E/W components
+        let latDistance = this.#haversineDistance(lat1, long1, lat2, long1);
+        let longDistance = this.#haversineDistance(lat1, long1, lat1, long2);
+        // Adjust sign by hemisphere
+		latDistance = lat1 > lat2 ? -latDistance : latDistance;
+		longDistance = long1 > long2 ? -longDistance : longDistance;
 
-		// Calculate E/W component using Pythagorean theorem
-		let longDistance = this.#haversineDistance(lat1, long1, lat1, long2);
-	
         let altDifference = parseFloat(waypoint2.elev) - parseFloat(waypoint1.elev);
 
         return {
@@ -208,44 +200,38 @@ class m2000 {
         const delta = this.#getWPDeltaMeters(lastWaypoint, waypoint);
         // Convert the calculated values to formatted values ready for typing into UNI
         const deltaOut = {
-            latOffset: this.#formatNumber(Math.abs(delta.latMeters), 5, 0),
+            latOffset: Math.abs(delta.latMeters).toFixed(0).padStart(5, "0"),
             latDirKey: delta.latMeters >= 0 ? "2" : "8",
-            longOffset: this.#formatNumber(Math.abs(delta.longMeters), 5, 0),
+            longOffset: Math.abs(delta.longMeters).toFixed(0).padStart(5, "0"),
             longDirKey: delta.longMeters >= 0 ? "6" : "4",
-            altitudeDifference: this.#formatNumber(Math.abs(delta.altitudeDifference), 5, 0),
+            altitudeDifference: Math.abs(delta.altitudeDifference).toFixed(0).padStart(5, "0"),
             altitudeSignKey: delta.altitudeDifference >= 0 ? "1" : "7",
         };
         // Set Parameter to BAD - ΔL/ΔG
         this.#addParamSelectorCode(this.#parameter.dL_dG);
         // 1 - Left field (N/S offset meters)
-        this.#addKeyboardCode('1');
+        this.#addNumpadCodes("1");
         // Direction
-        this.#addKeyboardCode(deltaOut.latDirKey);
+        this.#addNumpadCodes(deltaOut.latDirKey);
         // Type the number + INS
-        for (let i = 0; i < deltaOut.latOffset.length; i++) {
-            this.#addKeyboardCode(deltaOut.latOffset.charAt(i));
-        }
+        this.#addNumpadCodes(deltaOut.latOffset);
         this.#addButtonCode(this.#kuKeycodes.INS);
 
         // 3 - Right field (E/W offset meters)
-        this.#addKeyboardCode('3');
+        this.#addNumpadCodes("3");
         // Direction
-        this.#addKeyboardCode(deltaOut.longDirKey);
+        this.#addNumpadCodes(deltaOut.longDirKey);
         // Type the number + INS
-        for (let i = 0; i < deltaOut.longOffset.length; i++) {
-            this.#addKeyboardCode(deltaOut.longOffset.charAt(i));
-        }
+        this.#addNumpadCodes(deltaOut.longOffset);
         this.#addButtonCode(this.#kuKeycodes.INS);
 
         // Set Parameter to BAD - delta ALT
         this.#addParamSelectorCode(this.#parameter.dALT);
         // Select feet and +/- symbol
-        this.#addKeyboardCode('1');
-        this.#addKeyboardCode(deltaOut.altitudeSignKey);
+        this.#addNumpadCodes("1");
+        this.#addNumpadCodes(deltaOut.altitudeSignKey);
         // Type the number for altitude + INS
-        for (let i = 0; i < deltaOut.altitudeDifference.length; i++) {
-            this.#addKeyboardCode(deltaOut.altitudeDifference.charAt(i));
-        }
+        this.#addNumpadCodes(deltaOut.altitudeDifference);
         this.#addButtonCode(this.#kuKeycodes.INS);
     }
 
@@ -253,9 +239,9 @@ class m2000 {
         this.#codesPayload = [];
         let previousWP = null;
         for (const waypoint of waypoints) {
-            // If the waypoint name = "BAD" then create a Waypoint Offset (BAD - "But Additionnel") 
+            // If the waypoint name = "BAD" then create a Waypoint Offset (BAD - "But Additionnel")
             // attached to the previous waypoint, but if no previous waypoint provided then create as normal waypoint
-            if (waypoint.name.toLowerCase() === "bad" && previousWP !== null) {
+            if (waypoint.name.toUpperCase() === "BAD" && previousWP !== null) {
                 this.#createBAD(waypoint, previousWP);
                 previousWP = null;
             } else {
