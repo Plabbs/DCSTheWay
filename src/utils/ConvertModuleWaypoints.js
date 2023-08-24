@@ -33,6 +33,8 @@ const convert = (dcsWaypoints, module) => {
         const elev = Math.trunc(Convertors.mToF(dcsWaypoint.elev)).toString();
         const latHem = dcsWaypoint.lat > 0 ? "N" : "S";
         const longHem = dcsWaypoint.long > 0 ? "E" : "W";
+        const x = dcsWaypoint.x;
+        const z = dcsWaypoint.z;
         waypoints.push({
           name,
           id,
@@ -41,6 +43,8 @@ const convert = (dcsWaypoints, module) => {
           elev,
           latHem,
           longHem,
+          x,
+          z,
         });
       }
       return waypoints;
@@ -65,6 +69,8 @@ const convert = (dcsWaypoints, module) => {
         const elev = Math.trunc(Convertors.mToF(dcsWaypoint.elev)).toString();
         const latHem = dcsWaypoint.lat > 0 ? "N" : "S";
         const longHem = dcsWaypoint.long > 0 ? "E" : "W";
+        const x = dcsWaypoint.x;
+        const z = dcsWaypoint.z;
         waypoints.push({
           name,
           id,
@@ -73,6 +79,8 @@ const convert = (dcsWaypoints, module) => {
           elev,
           latHem,
           longHem,
+          x,
+          z,          
         });
       }
       return waypoints;
@@ -101,6 +109,8 @@ const convert = (dcsWaypoints, module) => {
         const elev = Math.trunc(Convertors.mToF(dcsWaypoint.elev)).toString();
         const latHem = dcsWaypoint.lat > 0 ? "N" : "S";
         const longHem = dcsWaypoint.long > 0 ? "E" : "W";
+        const x = dcsWaypoint.x;
+        const z = dcsWaypoint.z;
         waypoints.push({
           name,
           id,
@@ -109,6 +119,8 @@ const convert = (dcsWaypoints, module) => {
           elev,
           latHem,
           longHem,
+          x,
+          z,
         });
       }
       return waypoints;
@@ -137,6 +149,8 @@ const convert = (dcsWaypoints, module) => {
         const elev = Math.trunc(Convertors.mToF(dcsWaypoint.elev)).toString();
         const latHem = dcsWaypoint.lat > 0 ? "N" : "S";
         const longHem = dcsWaypoint.long > 0 ? "E" : "W";
+        const x = dcsWaypoint.x;
+        const z = dcsWaypoint.z;
         waypoints.push({
           name,
           id,
@@ -145,6 +159,8 @@ const convert = (dcsWaypoints, module) => {
           elev,
           latHem,
           longHem,
+          x,
+          z,
         });
       }
       return waypoints;
@@ -172,6 +188,8 @@ const convert = (dcsWaypoints, module) => {
         const elev = Math.trunc(Convertors.mToF(dcsWaypoint.elev)).toString();
         const latHem = dcsWaypoint.lat > 0 ? "N" : "S";
         const longHem = dcsWaypoint.long > 0 ? "E" : "W";
+        const x = dcsWaypoint.x;
+        const z = dcsWaypoint.z;
         waypoints.push({
           name,
           id,
@@ -180,6 +198,8 @@ const convert = (dcsWaypoints, module) => {
           elev,
           latHem,
           longHem,
+          x,
+          z,
         });
       }
       return waypoints;

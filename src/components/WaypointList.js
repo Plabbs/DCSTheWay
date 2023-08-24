@@ -17,7 +17,7 @@ import ConvertModuleWaypoints from "../utils/ConvertModuleWaypoints";
 
 const WaypointList = () => {
   const isPending = useSelector((state) => state.ui.pendingWaypoint);
-  const { lat, long, elev, module } = useSelector((state) => state.dcsPoint);
+  const { lat, long, elev, module, x, z } = useSelector((state) => state.dcsPoint);
   const dcsWaypoints = useSelector((state) => state.waypoints.dcsWaypoints);
   const dispatch = useDispatch();
 
@@ -29,6 +29,8 @@ const WaypointList = () => {
         lat,
         long,
         elev,
+        x,
+        z,
       })
     );
   };
@@ -91,6 +93,8 @@ const WaypointList = () => {
                     elev={wp.elev}
                     latHem={wp.latHem}
                     longHem={wp.longHem}
+                    x={wp.x}
+                    z={wp.z}
                     onRename={renameHandler}
                     onElevation={elevationHandler}
                     onDelete={deleteHandler}
@@ -106,6 +110,8 @@ const WaypointList = () => {
                     elev={null}
                     latHem={null}
                     longHem={null}
+                    x={null}
+                    z={null}
                     onSave={saveWaypointHandler}
                   />
                 )}

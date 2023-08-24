@@ -20,7 +20,7 @@ const theme = createTheme(theWayTheme);
 
 function App() {
     const dispatch = useDispatch();
-    const {module, lat, long, elev} = useSelector((state) => state.dcsPoint);
+    const {module, lat, long, elev, x, z} = useSelector((state) => state.dcsPoint);
     const dcsWaypoints = useSelector((state) => state.waypoints.dcsWaypoints);
     const userPreferences = useSelector(state => state.ui.userPreferences);
 
@@ -29,13 +29,17 @@ function App() {
     const elevRef = useRef();
     const moduleRef = useRef();
     const dcsWaypointsRef = useRef();
+    const xRef = useRef();
+    const zRef = useRef();
     useEffect(() => {
         latRef.current = lat;
         longRef.current = long;
         elevRef.current = elev;
         moduleRef.current = module;
         dcsWaypointsRef.current = dcsWaypoints;
-    }, [lat, long, elev, module, dcsWaypoints]);
+        xRef.current = x;
+        zRef.current = z;
+    }, [lat, long, elev, module, dcsWaypoints, x, z]);
 
     useElectronIpcListeners();
     useEffect(() => {
@@ -45,6 +49,8 @@ function App() {
                     lat: latRef.current,
                     long: longRef.current,
                     elev: elevRef.current,
+                    x: xRef.current,
+                    z: zRef.current,
                 })
             );
         });

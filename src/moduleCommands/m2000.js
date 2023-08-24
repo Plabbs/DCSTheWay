@@ -119,72 +119,10 @@ class m2000 {
         this.#addButtonCode(this.#kuKeycodes.INS);
     }
 
-    static #toRadians(degrees) {
-        return degrees * (Math.PI / 180);
-    }
-
-    static #parseLatLong(value, hemisphere) {
-        let degrees, minutes = 0;
-
-        // Check if value is a string
-        if (typeof value === "string") {
-            const parts = value.split(".");
-            if (parts.length === 3) {
-                degrees = parseFloat(parts[0]);
-                minutes = parseFloat(parts[1] + "." + parts[2]);
-                degrees = degrees + minutes / 60;
-            } else if (parts.length === 2) {
-                degrees = parseFloat(value);
-            } else {
-                throw new Error("Invalid format for latitude or longitude");
-            }
-        }
-        // Check if value is a number
-        else if (typeof value === "number") {
-            degrees = value;
-        } else {
-            throw new Error("Invalid type for latitude or longitude");
-        }
-
-        let radians = this.#toRadians(degrees);
-        return hemisphere === 'S' || hemisphere === 'W' ? -radians : radians;
-    }
-
-    static #haversineDistance(lat1, long1, lat2, long2) {
-        const EARTH_RADIUS = 6371e3; // Earth's mean radius in meters
-        let deltaLat = lat2 - lat1;
-        let deltaLong = long2 - long1;
-
-        // Because of Caucasus map projection there must be an adjustment to the distances so that
-        // they match the distance-per-degree on the F10 map.  Since I don't know exactly how the
-        // projection formula works, I estimate rough multiplication factors per latitude and longtitude
-        // derived by taking measurements on the F10 map compared with calculated distances.
-        // Map boundary: N 40 - 45.38 and E28 - E46
-        if (lat1 > 0.6981317 && lat1 < 0.79645 && long1 > 0.48869 && long1 < 0.802851) {
-            deltaLat = deltaLat * 1.006;
-            deltaLong = deltaLong * 1.01;
-        }
-
-        const a = Math.pow(Math.sin(deltaLat / 2), 2) +
-                  Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLong / 2), 2);
-        const c = 2 * Math.atan(Math.sqrt(a));
-
-        return EARTH_RADIUS * c;
-    }
-
     static #getWPDeltaMeters(waypoint1, waypoint2) {
-        // Convert lat/long to radians
-        let lat1 = this.#parseLatLong(waypoint1.lat, waypoint1.latHem);
-        let long1 = this.#parseLatLong(waypoint1.long, waypoint1.longHem);
-        let lat2 = this.#parseLatLong(waypoint2.lat, waypoint2.latHem);
-        let long2 = this.#parseLatLong(waypoint2.long, waypoint2.longHem);
-
-        // Calculate N/S component and E/W components
-        let latDistance = this.#haversineDistance(lat1, long1, lat2, long1);
-        let longDistance = this.#haversineDistance(lat1, long1, lat1, long2);
-        // Adjust sign by hemisphere
-		latDistance = lat1 > lat2 ? -latDistance : latDistance;
-		longDistance = long1 > long2 ? -longDistance : longDistance;
+        // Calculate the Meters difference using the X/Z coordinates
+        let latDistance = parseFloat(waypoint2.x) - parseFloat(waypoint1.x);
+        let longDistance = parseFloat(waypoint2.z) - parseFloat(waypoint1.z);
 
         let altDifference = parseFloat(waypoint2.elev) - parseFloat(waypoint1.elev);
 
@@ -196,7 +134,7 @@ class m2000 {
     }
 
     static #createBAD(waypoint, lastWaypoint) {
-        // Find delta between coordinates in angle, distance and altitude (°, nm, feet)
+        // Find delta between coordinates in meters x/y
         const delta = this.#getWPDeltaMeters(lastWaypoint, waypoint);
         // Convert the calculated values to formatted values ready for typing into UNI
         const deltaOut = {
