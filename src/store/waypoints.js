@@ -16,6 +16,8 @@ const waypointsSlice = createSlice({
         lat: payload.lat,
         long: payload.long,
         elev: payload.elev,
+        x: payload.x,
+        z: payload.z,
       });
       state.idCounter++;
     },
@@ -58,6 +60,8 @@ const waypointsSlice = createSlice({
           lat: waypoint.lat,
           long: waypoint.long,
           elev: waypoint.elev,
+          x: waypoint.x,
+          z: waypoint.z,
         });
         state.idCounter++;
       }
