@@ -22,7 +22,7 @@ function App() {
     const dispatch = useDispatch();
     const {module, lat, long, elev, x, z} = useSelector((state) => state.dcsPoint);
     const dcsWaypoints = useSelector((state) => state.waypoints.dcsWaypoints);
-    const userPreferences = useSelector(state => state.ui.userPreferences);
+    const userPreferences = useSelector((state) => state.ui.userPreferences);
 
     const latRef = useRef();
     const longRef = useRef();
@@ -54,16 +54,26 @@ function App() {
                 })
             );
         });
+        ipcRenderer.on("saveAdditionalPoint", () => {
+            dispatch(
+                waypointsActions.addDcsWaypoint({
+                    lat: latRef.current,
+                    long: longRef.current,
+                    elev: elevRef.current,
+                    x: xRef.current,
+                    z: zRef.current,
+                    name: "Additional",
+                })
+            );
+            console.log("additional point saved");
+        });
         ipcRenderer.on("transferWaypoints", () => {
             handleTransfer();
         });
     }, []);
 
     const handleTransfer = async () => {
-        const moduleWaypoints = ConvertModuleWaypoints(
-            dcsWaypointsRef.current,
-            moduleRef.current
-        );
+        const moduleWaypoints = ConvertModuleWaypoints(dcsWaypointsRef.current, moduleRef.current);
         let chosenSeat;
         if (areDialogsHidden()) {
             chosenSeat = moduleRef.current;
@@ -84,21 +94,18 @@ function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <CssBaseline enableColorScheme/>
-            <TitleBar/>
-            <ModalContainer/>
+            <CssBaseline enableColorScheme />
+            <TitleBar />
+            <ModalContainer />
             <Box sx={{height: "100vh"}}>
                 <Box sx={{height: "25%"}}>
-                    <SourceSelector/>
+                    <SourceSelector />
                 </Box>
                 <Box sx={{height: "60%", paddingX: 2}}>
-                    <WaypointList/>
+                    <WaypointList />
                 </Box>
                 <Box sx={{height: "15%"}}>
-                    <TransferControls
-                        onTransfer={handleTransfer}
-                        onSaveFile={handleFileSave}
-                    />
+                    <TransferControls onTransfer={handleTransfer} onSaveFile={handleFileSave} />
                 </Box>
             </Box>
         </ThemeProvider>

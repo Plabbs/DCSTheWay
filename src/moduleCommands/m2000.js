@@ -108,7 +108,7 @@ class m2000 {
         if (degreesTxt.length === 4) {
             degreesOut = degreesTxt;
         } else {
-            degreesOut = parseFloat(degreesTxt).toFixed(1).replace(".","").padStart(4,"0");
+            degreesOut = parseFloat(degreesTxt).toFixed(1).replace(".", "").padStart(4, "0");
         }
         // Set Parameter RD/TD   (Route désirée / Temps désiré)
         this.#addParamSelectorCode(this.#parameter.RD_TD);
@@ -133,9 +133,9 @@ class m2000 {
         };
     }
 
-    static #createBAD(waypoint, lastWaypoint) {
+    static #createBAD(offsetPoint, lastWaypoint) {
         // Find delta between coordinates in meters x/y
-        const delta = this.#getWPDeltaMeters(lastWaypoint, waypoint);
+        const delta = this.#getWPDeltaMeters(lastWaypoint, offsetPoint);
         // Convert the calculated values to formatted values ready for typing into UNI
         const deltaOut = {
             latOffset: Math.abs(delta.latMeters).toFixed(0).padStart(5, "0"),
@@ -175,22 +175,60 @@ class m2000 {
 
     static createButtonCommands(waypoints) {
         this.#codesPayload = [];
-        let previousWP = null;
-        for (const waypoint of waypoints) {
-            // If the waypoint name = "BAD" then create a Waypoint Offset (BAD - "But Additionnel")
-            // attached to the previous waypoint, but if no previous waypoint provided then create as normal waypoint
-            if (waypoint.name.toUpperCase() === "BAD" && previousWP !== null) {
-                this.#createBAD(waypoint, previousWP);
-                previousWP = null;
-            } else {
-                this.#createWaypoint(waypoint);
-                previousWP = waypoint;
+        let waypointCollection = [];
 
+        // We need to know in advance if a waypoint has an offset so that the desired heading can be set
+        // so we need to create a new list of waypoints along with the corresponding offset
+        let waypointWithOffset = { waypoint: null, offset: null, heading: null };
+        for (const waypoint of waypoints) {
+            // Determine offset waypoints by start of name
+            let isOffset =
+                waypoint.name.toUpperCase() === "BAD" ||
+                waypoint.name.toUpperCase() === "OFFSET" ||
+                waypoint.name.toUpperCase().substring(0,10) === "ADDITIONAL";
+            // If the waypoint is not an offset waypoint or the previous waypoint has not been set yet
+            if (!isOffset || waypointWithOffset.waypoint === null) {
+                // Normal waypoint
+                // First save the previous waypoint if it exists
+                if (waypointWithOffset.waypoint !== null) {
+                    waypointCollection.push(waypointWithOffset);
+                }
+                // Then set the current waypoint in a new object
+                waypointWithOffset = { waypoint: waypoint, offset: null, heading: null };
                 // Check if waypoint name is in any of the digit formats for Desired Heading
                 // "ddd", "dddd", "ddd.d"
                 if (/^(\d{4}|\d{3}(\.\d)?|)$/.test(waypoint.name)) {
-                    this.#addDesiredHeading(waypoint.name);
+                    waypointWithOffset.heading = waypoint.name;
                 }
+            } else {
+                // Offset waypoint
+                // Add the offset waypoint to the previous waypoint
+                waypointWithOffset.offset = waypoint;
+                // Calculate the heading by the angle of the x/z coordinates, in degrees converted to 3 digit text
+                if (waypointWithOffset.heading === null) {
+                    waypointWithOffset.heading = (Math.atan2(waypoint.x, waypoint.z) * (180 / Math.PI))
+                        .toFixed(0)
+                        .padStart(3, "0");
+                }
+                // Add the waypoint to the collection and reset the object
+                waypointCollection.push(waypointWithOffset);
+                waypointWithOffset = { waypoint: null, offset: null, heading: null };
+            }
+        }
+        // Add the last waypoint if it exists
+        if (waypointWithOffset.waypoint !== null) {
+            waypointCollection.push(waypointWithOffset);
+        }
+
+        console.log("starting to create commands");
+        // Now we have a list of waypoints with their offsets, we can create the commands
+        for (const waypointWithOffset of waypointCollection) {
+            this.#createWaypoint(waypointWithOffset.waypoint);
+            if (waypointWithOffset.heading !== null) {
+                this.#addDesiredHeading(waypointWithOffset.heading);
+            }
+            if (waypointWithOffset.offset !== null) {
+                this.#createBAD(waypointWithOffset.offset, waypointWithOffset.waypoint);
             }
         }
         return this.#codesPayload;

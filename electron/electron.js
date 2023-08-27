@@ -62,6 +62,8 @@ if (!isTheOnlyInstance) {
                 ctrlPressed = true;
             } else if (event.keycode === UiohookKey.S && ctrlPressed && shiftPressed) {
                 mainWindow.webContents.send("saveWaypoint");
+            } else if (event.keycode === UiohookKey.A && ctrlPressed && shiftPressed) {
+                mainWindow.webContents.send("saveAdditionalPoint");
             } else if (event.keycode === UiohookKey.T && ctrlPressed && shiftPressed) {
                 mainWindow.webContents.send("transferWaypoints");
             } else if (event.keycode === UiohookKey.D && ctrlPressed && shiftPressed) {
