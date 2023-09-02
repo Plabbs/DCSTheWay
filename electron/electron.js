@@ -1,8 +1,8 @@
 const path = require("path");
-const {app, session} = require("electron");
+const {app, session, ipcMain} = require("electron");
 const isDev = require("electron-is-dev");
 const UDPListener = require("./UDPListener.js");
-const UDPSender = require("./TCPSender");
+const TCPSender = require("./TCPSender");
 const SelectionHandler = require("./SelectionHandler.js");
 const UserPreferenceHandler = require("./userPreferenceHandler");
 const MainWindow = require("./MainWindow.js");
@@ -11,16 +11,12 @@ const {uIOhook, UiohookKey} = require("uiohook-napi");
 let mainWindow;
 let udpListener;
 let selectionHandler;
-let udpSender;
+let tcpSender;
 let userPreferenceHandler;
 
 function createWindow() {
     mainWindow = new MainWindow();
-    mainWindow.loadURL(
-        isDev
-            ? "http://localhost:3000"
-            : `file://${path.join(__dirname, "../build/index.html")}`
-    );
+    mainWindow.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`);
 
     mainWindow.on("closed", () => app.quit());
     if (isDev) {
@@ -49,7 +45,7 @@ if (!isTheOnlyInstance) {
         createWindow();
         udpListener = new UDPListener(mainWindow);
         selectionHandler = new SelectionHandler(mainWindow);
-        udpSender = new UDPSender();
+        tcpSender = new TCPSender();
         userPreferenceHandler = new UserPreferenceHandler(mainWindow);
 
         //keybinds
@@ -62,10 +58,14 @@ if (!isTheOnlyInstance) {
                 ctrlPressed = true;
             } else if (event.keycode === UiohookKey.S && ctrlPressed && shiftPressed) {
                 mainWindow.webContents.send("saveWaypoint");
+            } else if (event.keycode === UiohookKey.A && ctrlPressed && shiftPressed) {
+                mainWindow.webContents.send("saveAdditionalPoint");
             } else if (event.keycode === UiohookKey.T && ctrlPressed && shiftPressed) {
                 mainWindow.webContents.send("transferWaypoints");
             } else if (event.keycode === UiohookKey.D && ctrlPressed && shiftPressed) {
                 mainWindow.webContents.send("deleteWaypoints");
+            } else if (event.keycode === UiohookKey.F && ctrlPressed && shiftPressed) {
+                selectionHandler.sendCrosshairMessage("toggle");
             }
         });
 
@@ -80,6 +80,4 @@ if (!isTheOnlyInstance) {
     });
 
     app.on("window-all-closed", () => app.quit());
-
 }
-

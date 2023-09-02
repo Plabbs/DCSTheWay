@@ -10,9 +10,13 @@ const waypointsSlice = createSlice({
     addDcsWaypoint(state, action) {
       const payload = action.payload;
 
+      // If name is provided, use it. Otherwise, use default name.
+      let nameTxt = `Waypoint ${state.idCounter}`;
+      if (payload.name) { nameTxt = payload.name; }
+
       state.dcsWaypoints.push({
         id: state.idCounter,
-        name: `Waypoint ${state.idCounter}`,
+        name: nameTxt,
         lat: payload.lat,
         long: payload.long,
         elev: payload.elev,

@@ -1,4 +1,4 @@
-log.write("THEWAY", log.INFO, "Initializing...")
+---@diagnostic disable: undefined-global
 --Version 3
 local tcpServer                        = nil
 local udpSpeaker                       = nil
@@ -28,6 +28,7 @@ function LuaExportStart()
     tcpServer:bind("127.0.0.1", 42070)
     tcpServer:listen(1)
     tcpServer:settimeout(0)
+    log.write("THEWAY", log.INFO, "LuaExportStart done")
 end
 
 local data
@@ -65,7 +66,7 @@ function LuaExportBeforeNextFrame()
             if currCommandIndex <= #keys then
                 lastDevice = keys[currCommandIndex]["device"]
                 lastCode = keys[currCommandIndex]["code"]
-                local stringtoboolean = { ["true"] = true,["false"] = false }
+                local stringtoboolean = { ["true"] = true, ["false"] = false }
                 lastNeedDepress = stringtoboolean[keys[currCommandIndex]["addDepress"]]
                 local delay = tonumber(keys[currCommandIndex]["delay"])
                 local activate = tonumber(keys[currCommandIndex]["activate"])
@@ -96,6 +97,7 @@ function LuaExportBeforeNextFrame()
     end
 end
 
+local posLastsent = nil;
 function LuaExportAfterNextFrame()
     if upstreamLuaExportAfterNextFrame ~= nil then
         successful, err = pcall(upstreamLuaExportAfterNextFrame)
@@ -104,31 +106,35 @@ function LuaExportAfterNextFrame()
         end
     end
 
+    local currTime = socket.gettime()
+    if posLastsent == nil or currTime - posLastsent > 0.1 then
+        posLastsent = currTime
+        local selfData = LoGetSelfData()
+        if (selfData ~= nil) then
+            local model = selfData["Name"]
 
-    local camPos = LoGetCameraPosition()
-    local loX = camPos['p']['x']
-    local loZ = camPos['p']['z']
-    local elevation = LoGetAltitude(loX, loZ)
-    local coords = LoLoCoordinatesToGeoCoordinates(loX, loZ)
-    local selfData = LoGetSelfData()
-    if (selfData ~= nil) then
-        local model = selfData["Name"];
-        local message = {}
-        message["model"] = model
-        message["coords"] = {}
-        message["coords"]["lat"] = tostring(coords.latitude)
-        message["coords"]["long"] = tostring(coords.longitude)
-        message["elev"] = tostring(elevation)
-        message["camPos"] = {}
-        message["camPos"]["x"] = tostring(loX)
-        message["camPos"]["z"] = tostring(loZ)
-        local toSend = JSON:encode(message)
-
-        if pcall(function()
-                socket.try(udpSpeaker:sendto(toSend, "127.0.0.1", 42069))
-            end) then
-        else
-            log.write("THEWAY", log.ERROR, "Unable to send data")
+            -- Get camera position
+            local camPos = LoGetCameraPosition()
+            local loX = camPos['p']['x']
+            local loZ = camPos['p']['z']
+            local elevation = LoGetAltitude(loX, loZ)
+            local coords = LoLoCoordinatesToGeoCoordinates(loX, loZ)
+            local message = {}
+            message["model"] = model
+            message["coords"] = {}
+            message["coords"]["lat"] = tostring(coords.latitude)
+            message["coords"]["long"] = tostring(coords.longitude)
+            message["elev"] = tostring(elevation)
+            message["camPos"] = {}
+            message["camPos"]["x"] = tostring(loX)
+            message["camPos"]["z"] = tostring(loZ)
+            local toSend = JSON:encode(message)
+            if pcall(function()
+                    socket.try(udpSpeaker:sendto(toSend, "127.0.0.1", 42069))
+                end) then
+            else
+                log.write("THEWAY", log.ERROR, "Unable to send data")
+            end
         end
     end
 end

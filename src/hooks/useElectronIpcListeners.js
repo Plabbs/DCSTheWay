@@ -11,9 +11,12 @@ const useElectronIpcListeners = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        ipcRenderer.on("dataReceived", throttle((event, msg) => {
-            dispatch(dcsPointActions.changeCoords(JSON.parse(msg)));
-        }, 100));
+        ipcRenderer.on(
+            "dataReceived",
+            throttle((event, msg) => {
+                dispatch(dcsPointActions.changeCoords(JSON.parse(msg)));
+            }, 100)
+        );
         ipcRenderer.on("fileOpened", (event, msg) => {
             dispatch(waypointsActions.appendWaypoints(msg));
         });
@@ -25,6 +28,6 @@ const useElectronIpcListeners = () => {
         });
         ipcRenderer.send("getPreferences");
     }, []);
-}
+};
 
 export default useElectronIpcListeners;
