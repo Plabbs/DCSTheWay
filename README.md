@@ -19,9 +19,18 @@ Supported modules:
  
 Multiplayer is supported as long as the server has Player Exports turned on (most servers do).
 
+## Special functionality per module
+
+### Mirage 2000C
+* Desired heading<br>If the name of the waypoint is 3 digits (e.g. 090) then it interpreted as desired heading (Route Désirée) which can be seen using the RD button on the PCA top row.
+* Creation of offset waypoints (BAD)<br>
+Just create a waypoint after another and name it "BAD" or "Additional" and then it will be created as an offset for the previous waypoint.  This will allow toss bombing CCRP target.
+Can also be created directly using shortcut Ctrl+Shift+A
+
 ## How to install?
 1. Download the latest zip file from the Releases section, and extract it. 
-2. Copy the `TheWay.lua` file from the folder you just extracted into `Users/YourUsernameHere/Saved Games/DCS/Scripts`. The `DCS` folder name may be `DCS.openbeta` if you are on the openbeta version of the game. If you are on Steam, the name will always be just `DCS`.
+2. Copy everything in `Scripts` folder from the folder you just extracted into `Users/YourUsername/Saved Games/DCS/Scripts`. The `DCS` folder name may be `DCS.openbeta` if you are on the openbeta version of the game. If you are on Steam, the name will always be just `DCS`.
+
 3. Edit the `Export.lua` file there and append this line at the end of the file, and save it:
   ```lua
   local TheWayLfs=require('lfs'); dofile(TheWayLfs.writedir()..'Scripts/TheWay.lua')
@@ -31,7 +40,7 @@ Multiplayer is supported as long as the server has Player Exports turned on (mos
 4. Run the installer from the zip file you've previously extracted.
 5. After installation, the program will launch, and you can go fly! You can find a shortcut to TheWay on your desktop.
 
-If you are updating from an older version, simply download the newest release, rerun the installer and replace your existing `TheWay.lua` file in Saved Games with the new one.
+If you are updating from an older version, simply download the newest release, rerun the installer and replace your existing Scripts files in Saved Games with the new ones.
 
 ## How to use? 
 Video tutorial here:
@@ -42,9 +51,11 @@ Video tutorial here:
 ### I cannot find the installer
 Make sure you have downloaded the program from the Releases section, and not the source code.  
 ### How do I use this for VR?
-As I do not own a VR headset, it is hard for me to build a user interface for it. But, instead I have implemented a series of keybinds to help:
-CTRL+SHIFT+S: to save a point
-CTRL+SHIFT+T: to transfer the waypoints
+For VR the main waypoint list is not visible, but everything can be controlled using keybinds:<br>
+CTRL+SHIFT+F: Show/Hide crosshair<br>
+CTRL+SHIFT+S: to save a point<br>
+CTRL+SHIFT+A: to save a point named "Additional"<br>
+CTRL+SHIFT+T: to transfer the waypoints<br>
 CTRL+SHIFT+D: to delete all waypoints
 ### I get a "No connection to DCS" error!
 Make sure you have followed the install instructions to the letter, and that every file is where it should be.

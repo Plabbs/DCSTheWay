@@ -184,7 +184,6 @@ class m2000 {
             // Determine offset waypoints by start of name
             let isOffset =
                 waypoint.name.toUpperCase() === "BAD" ||
-                waypoint.name.toUpperCase() === "OFFSET" ||
                 waypoint.name.toUpperCase().substring(0,10) === "ADDITIONAL";
             // If the waypoint is not an offset waypoint or the previous waypoint has not been set yet
             if (!isOffset || waypointWithOffset.waypoint === null) {
@@ -206,9 +205,10 @@ class m2000 {
                 waypointWithOffset.offset = waypoint;
                 // Calculate the heading by the angle of the x/z coordinates, in degrees converted to 3 digit text
                 if (waypointWithOffset.heading === null) {
-                    waypointWithOffset.heading = (Math.atan2(waypoint.x, waypoint.z) * (180 / Math.PI))
-                        .toFixed(0)
-                        .padStart(3, "0");
+                    let waypointDiff = this.#getWPDeltaMeters(waypointWithOffset.waypoint, waypointWithOffset.offset);
+                    let angle = (Math.atan2(waypointDiff.longMeters, waypointDiff.latMeters) * (180 / Math.PI));
+                    angle = angle < 0 ? angle + 360 : angle;
+                    waypointWithOffset.heading = angle.toFixed(0).padStart(3, "0");
                 }
                 // Add the waypoint to the collection and reset the object
                 waypointCollection.push(waypointWithOffset);
@@ -220,7 +220,6 @@ class m2000 {
             waypointCollection.push(waypointWithOffset);
         }
 
-        console.log("starting to create commands");
         // Now we have a list of waypoints with their offsets, we can create the commands
         for (const waypointWithOffset of waypointCollection) {
             this.#createWaypoint(waypointWithOffset.waypoint);
