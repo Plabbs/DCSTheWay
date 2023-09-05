@@ -81,6 +81,10 @@ function Crosshair:checkForIncomingConnections()
         self:log("Received command: " .. data)
         if data == "toggle" then
             self:toggle()
+        elseif data == "show" then
+            self:show()
+        elseif data == "hide" then
+            self:hide()
         end
     end
 end
@@ -97,9 +101,9 @@ function Crosshair:createCrosshairWindow()
     end    
 
     local screenWidth, screenHeigt = dxgui.GetScreenSize()
-    local x = screenWidth / 2 - 7
-    local y = screenHeigt / 2 - 7
-    self.crosshairWindow:setBounds(math.floor(x), math.floor(y), 14, 14)
+    local x = screenWidth / 2 - 16
+    local y = screenHeigt / 2 - 16
+    self.crosshairWindow:setBounds(math.floor(x), math.floor(y), 32, 32)
     -- -- Hotkey to toggle the crosshair moved to the main JavaScript program
     -- self.dialog:addHotKeyCallback(
     --     "Ctrl+Shift+f",
@@ -125,7 +129,7 @@ local function initCrosshair()
         else
             -- Only check for incoming connections periodically to avoid performance issues
             local now = socket.gettime()
-            if lastCheckTime == nil or now - lastCheckTime > 1 then
+            if lastCheckTime == nil or now - lastCheckTime > 0.8 then
                 Crosshair:checkForIncomingConnections();
                 lastCheckTime = now
             end

@@ -3,8 +3,8 @@ dialog = {
     ["params"] = {
         ["bounds"] = {
             [1] = {
-                ["h"] = 14,
-                ["w"] = 14,
+                ["h"] = 32,
+                ["w"] = 32,
                 ["x"] = 0,
                 ["y"] = 0
             }
@@ -39,8 +39,8 @@ dialog = {
             ["type"] = "Static",
             ["params"] = {
                 ["bounds"] = {
-                    ["h"] = 14,
-                    ["w"] = 14,
+                    ["h"] = 32,
+                    ["w"] = 32,
                     ["x"] = 0,
                     ["y"] = 0
                 },
@@ -56,7 +56,7 @@ dialog = {
                         [1] = {
                             ["picture"] = {
                                 ["color"] = "0xffffffff",
-                                ["file"] = "dxgui\\skins\\skinME\\images\\m1\\icons\\cross-out.png"
+                                ["file"] = "dxgui\\skins\\skinME\\images\\cross32x32.png"
                             }
                         }
                     }

@@ -13,9 +13,11 @@ Supported modules:
 * F/A-18C (& Superbug FA-18E/F/G) 
 * A-10C and A-10C2
 * Mirage 2000
+* Mirage F1 EE
 * AV8BNA Harrier
 * Ka-50 Blackshark
 * AH-64D Apache (Pilot and CP/G)
+
  
 Multiplayer is supported as long as the server has Player Exports turned on (most servers do).
 

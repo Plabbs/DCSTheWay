@@ -3,6 +3,7 @@ import f15e from "./f15e";
 import fa18 from "./fa18";
 import ah64 from "./ah64";
 import a10 from "./a10";
+import f1ee from "./f1ee";
 import m2000 from "./m2000";
 import av8b from "./av8b";
 import ka50 from "./ka50";
@@ -43,6 +44,9 @@ export default function getModuleCommands(module, waypoints) {
         case "A-10C": {
             return a10.createButtonCommands(waypoints);
         }
+        case "Mirage-F1EE": {
+            return f1ee.createButtonCommands(waypoints);
+        }
         case "M-2000C": {
             return m2000.createButtonCommands(waypoints);
         }
@@ -52,7 +56,7 @@ export default function getModuleCommands(module, waypoints) {
         case "Ka-50":
         case "Ka-50_3": {
             return ka50.createButtonCommands(waypoints);
-        }
+        }        
         default:
             return [];
     }
