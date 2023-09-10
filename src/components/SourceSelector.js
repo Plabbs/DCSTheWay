@@ -24,7 +24,8 @@ const supportedModules = [
   "AV8BNA",
   "Ka-50",
   "Ka-50_3",
-  "Mirage-F1EE"
+  "Mirage-F1EE",
+  "AJS37",
 ];
 const SourceSelector = () => {
   const [inputMethod, setInputMethod] = useState("F10 Map");
