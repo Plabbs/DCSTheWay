@@ -16,8 +16,8 @@ class SelectionHandler {
         ipcMain.on("f10Stop", () => {
             this.f10SelectionStop();
         });
-        ipcMain.on("saveFile", (event, msg) => {
-            this.saveFile(msg);
+        ipcMain.on("saveFile", (event, msg, module) => {
+            this.saveFile(msg, module);
         });
         ipcMain.on("openFile", () => {
             this.openFile();
@@ -39,24 +39,11 @@ class SelectionHandler {
             });
     }
 
-    saveFile(commands) {
-        const monthNames = [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-        ];
-
+    saveFile(commands, module) {
         const d = new Date();
-        const filename = `waypoints${d.getDate() + "" + monthNames[d.getMonth()] + "" + d.getFullYear()}`;
+        // Filename with timestamp
+        const filename = `waypoints_${module}_${d.toISOString().slice(0, -5).replace("T", "_")}`;
+
 
         dialog
             .showSaveDialog({
@@ -98,9 +85,9 @@ class SelectionHandler {
         if (socket === undefined) {
             return;
         }
-
+        // Send notification to TheWayHook.lua to show/hide crosshair
         const message = Buffer.from(msg, "utf8");
-        socket.send(message, 0, message.length, 64880, "127.0.0.1", (err) => {
+        socket.send(message, 0, message.length, 42068, "127.0.0.1", (err) => {
             if (err) {
                 console.error("Error sending the message:", err);
                 socket.close();

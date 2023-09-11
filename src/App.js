@@ -85,7 +85,7 @@ function App() {
     };
 
     const handleFileSave = () => {
-        ipcRenderer.send("saveFile", JSON.stringify(dcsWaypoints));
+        ipcRenderer.send("saveFile", JSON.stringify(dcsWaypoints), module);
     };
 
     const areDialogsHidden = () => {

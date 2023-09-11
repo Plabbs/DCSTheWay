@@ -1,5 +1,6 @@
 const dgram = require("dgram");
 
+// Listen for DCS waypoints from TheWay.lua
 class UDPListener {
   constructor(mainWindow) {
     const socket = dgram.createSocket("udp4");

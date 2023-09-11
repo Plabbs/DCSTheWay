@@ -1,9 +1,8 @@
 class ajs37 {
     // Keys (see Mods\aircraft\AJS37\Input\keyboard\default.lua)
     static device = {
-        NAVIGATION: 14,
-        NAVIGATIONPANEL: 26,
-        ROTARY_MODE: 26,
+        NAVIGATION: 12,
+        NAVIGATIONPANEL: 23,
     };
     // refactor, remove delay attribute and move to keypadPress 
 
@@ -109,6 +108,8 @@ class ajs37 {
         // Output and switch to position mode
         payload.push(this.key("OUT"));
         payload.push(this.key("MODE_AKT_POS"));
+        // log json of payload
+        console.log(payload);
         return payload;
     }
 }

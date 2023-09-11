@@ -17,17 +17,26 @@ Supported modules:
 * AV8BNA Harrier
 * Ka-50 Blackshark
 * AH-64D Apache (Pilot and CP/G)
+* AJS-37 Viggen
 
  
 Multiplayer is supported as long as the server has Player Exports turned on (most servers do).
 
 ## Special functionality per module
 
+The special functionality is accessed using naming patterns.  They are not case sensitive so "Additional" and "additional" are equivalent.
+
 ### Mirage 2000C
 * Desired heading<br>If the name of the waypoint is 3 digits (e.g. 090) then it interpreted as desired heading (Route Désirée) which can be seen using the RD button on the PCA top row.
 * Creation of offset waypoints (BAD)<br>
-Just create a waypoint after another and name it "BAD" or "Additional" and then it will be created as an offset for the previous waypoint.  This will allow toss bombing CCRP target.
+Create a waypoint after another and name it "BAD" or "Additional" and then it will be created as an offset for the previous waypoint.  This will allow toss bombing CCRP target.
 Can also be created directly using shortcut Ctrl+Shift+A
+
+### AJS 37 Viggen
+* Waypoints are processed in order and assigned to B1 up to B9  (Shortcut Ctrl+Shift+S)
+* Points named "M" or "Additional" are created as target waypoints (Shortcut Ctrl+Shift+A)
+* Points named "Bx1" to "Bx9" are created as markpoints (and don't fall into B1-9 range), no shortcut key.
+
 
 ## How to install?
 1. Download the latest zip file from the Releases section, and extract it. 
