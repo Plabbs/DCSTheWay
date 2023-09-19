@@ -107,7 +107,7 @@ function LuaExportAfterNextFrame()
     end
 
     local currTime = socket.gettime()
-    if posLastsent == nil or currTime - posLastsent > 0.1 then
+    if posLastsent == nil or currTime - posLastsent > 0.2 then
         posLastsent = currTime
         local selfData = LoGetSelfData()
         if (selfData ~= nil) then

@@ -2,57 +2,42 @@ class ajs37 {
     // Keys (see Mods\aircraft\AJS37\Input\keyboard\default.lua)
     static device = {
         NAVIGATION: 12,
-        NAVIGATIONPANEL: 23,
+        NAV_PANEL: 23,
     };
-    // refactor, remove delay attribute and move to keypadPress 
+    // refactor, remove delay attribute and move to keypadPress
 
     static keys = {
-        0: { device: this.device.NAVIGATION, code: 3020, activate: 1, addDepress: "true" },
-        1: { device: this.device.NAVIGATION, code: 3021, activate: 1, addDepress: "true" },
-        2: { device: this.device.NAVIGATION, code: 3022, activate: 1, addDepress: "true" },
-        3: { device: this.device.NAVIGATION, code: 3023, activate: 1, addDepress: "true" },
-        4: { device: this.device.NAVIGATION, code: 3024, activate: 1, addDepress: "true" },
-        5: { device: this.device.NAVIGATION, code: 3025, activate: 1, addDepress: "true" },
-        6: { device: this.device.NAVIGATION, code: 3026, activate: 1, addDepress: "true" },
-        7: { device: this.device.NAVIGATION, code: 3027, activate: 1, addDepress: "true" },
-        8: { device: this.device.NAVIGATION, code: 3028, activate: 1, addDepress: "true" },
-        9: { device: this.device.NAVIGATION, code: 3029, activate: 1, addDepress: "true" },
-        L_MAL: { device: this.device.NAVIGATION, code: 3008, activate: 1, addDepress: "true" },
-        LS_SKU: { device: this.device.NAVIGATION, code: 3009, activate: 1, addDepress: "true" },
-        Bx: { device: this.device.NAVIGATION, code: 3010, activate: 1, addDepress: "true" },
-        B1: { device: this.device.NAVIGATION, code: 3011, activate: 1, addDepress: "true" },
-        B2: { device: this.device.NAVIGATION, code: 3012, activate: 1, addDepress: "true" },
-        B3: { device: this.device.NAVIGATION, code: 3013, activate: 1, addDepress: "true" },
-        B4: { device: this.device.NAVIGATION, code: 3014, activate: 1, addDepress: "true" },
-        B5: { device: this.device.NAVIGATION, code: 3015, activate: 1, addDepress: "true" },
-        B6: { device: this.device.NAVIGATION, code: 3016, activate: 1, addDepress: "true" },
-        B7: { device: this.device.NAVIGATION, code: 3017, activate: 1, addDepress: "true" },
-        B8: { device: this.device.NAVIGATION, code: 3018, activate: 1, addDepress: "true" },
-        B9: { device: this.device.NAVIGATION, code: 3019, activate: 1, addDepress: "true" },
-        MODE_AKT_POS: { device: this.device.NAVIGATIONPANEL, code: 3009, activate: 0.6, addDepress: "false" },
-        MODE_REF_LOLA: {
-            device: this.device.NAVIGATIONPANEL,
-            code: 3009,
-            activate: 0.5,
-            addDepress: "false",
-        },
-        MODE_BANA_GRANS: {
-            device: this.device.NAVIGATIONPANEL,
-            code: 3009,
-            activate: 0.4,
-            addDepress: "false",
-        },
-        MODE_VINDRUTA_MAL: {
-            device: this.device.NAVIGATIONPANEL,
-            code: 3009,
-            activate: 0.3,
-            addDepress: "false",
-        },
-        MODE_TID: { device: this.device.NAVIGATIONPANEL, code: 3009, activate: 0.2, addDepress: "false" },
-        MODE_TAKT: { device: this.device.NAVIGATIONPANEL, code: 3009, activate: 0.1, addDepress: "false" },
-        MODE_ID_NR: { device: this.device.NAVIGATIONPANEL, code: 3009, activate: 0.0, addDepress: "false" },
-        IN: { device: this.device.NAVIGATIONPANEL, code: 3008, activate: 1, addDepress: "false" },
-        OUT: { device: this.device.NAVIGATIONPANEL, code: 3008, activate: 0, addDepress: "false" },
+        0: {device: this.device.NAVIGATION, code: 3020, activate: 1, addDepress: "true"},
+        1: {device: this.device.NAVIGATION, code: 3021, activate: 1, addDepress: "true"},
+        2: {device: this.device.NAVIGATION, code: 3022, activate: 1, addDepress: "true"},
+        3: {device: this.device.NAVIGATION, code: 3023, activate: 1, addDepress: "true"},
+        4: {device: this.device.NAVIGATION, code: 3024, activate: 1, addDepress: "true"},
+        5: {device: this.device.NAVIGATION, code: 3025, activate: 1, addDepress: "true"},
+        6: {device: this.device.NAVIGATION, code: 3026, activate: 1, addDepress: "true"},
+        7: {device: this.device.NAVIGATION, code: 3027, activate: 1, addDepress: "true"},
+        8: {device: this.device.NAVIGATION, code: 3028, activate: 1, addDepress: "true"},
+        9: {device: this.device.NAVIGATION, code: 3029, activate: 1, addDepress: "true"},
+        L_MAL: {device: this.device.NAVIGATION, code: 3008, activate: 1, addDepress: "true"},
+        LS_SKU: {device: this.device.NAVIGATION, code: 3009, activate: 1, addDepress: "true"},
+        Bx: {device: this.device.NAVIGATION, code: 3010, activate: 1, addDepress: "true"},
+        B1: {device: this.device.NAVIGATION, code: 3011, activate: 1, addDepress: "true"},
+        B2: {device: this.device.NAVIGATION, code: 3012, activate: 1, addDepress: "true"},
+        B3: {device: this.device.NAVIGATION, code: 3013, activate: 1, addDepress: "true"},
+        B4: {device: this.device.NAVIGATION, code: 3014, activate: 1, addDepress: "true"},
+        B5: {device: this.device.NAVIGATION, code: 3015, activate: 1, addDepress: "true"},
+        B6: {device: this.device.NAVIGATION, code: 3016, activate: 1, addDepress: "true"},
+        B7: {device: this.device.NAVIGATION, code: 3017, activate: 1, addDepress: "true"},
+        B8: {device: this.device.NAVIGATION, code: 3018, activate: 1, addDepress: "true"},
+        B9: {device: this.device.NAVIGATION, code: 3019, activate: 1, addDepress: "true"},
+        MODE_AKT_POS: {device: this.device.NAV_PANEL, code: 3009, activate: 0.6, addDepress: "false"},
+        MODE_REF_LOLA: {device: this.device.NAV_PANEL, code: 3009, activate: 0.5, addDepress: "false"},
+        MODE_BANA_GRANS: {device: this.device.NAV_PANEL, code: 3009, activate: 0.4, addDepress: "false"},
+        MODE_VINDRUTA_MAL: {device: this.device.NAV_PANEL, code: 3009, activate: 0.3, addDepress: "false"},
+        MODE_TID: {device: this.device.NAV_PANEL, code: 3009, activate: 0.2, addDepress: "false"},
+        MODE_TAKT: {device: this.device.NAV_PANEL, code: 3009, activate: 0.1, addDepress: "false"},
+        MODE_ID_NR: {device: this.device.NAV_PANEL, code: 3009, activate: 0.0, addDepress: "false"},
+        IN: {device: this.device.NAV_PANEL, code: 3008, activate: 1, addDepress: "false"},
+        OUT: {device: this.device.NAV_PANEL, code: 3008, activate: 0, addDepress: "false"},
     };
 
     static key(key) {
@@ -60,8 +45,6 @@ class ajs37 {
         keyStroke.delay = 100;
         return keyStroke;
     }
-
-
 
     static createButtonCommands(waypoints) {
         let waypointCounter = 0;
@@ -87,7 +70,7 @@ class ajs37 {
 
             // If the waypoint name is in format "Bx(digit)", treat this as Bx point
             if (waypoint.name.toLowerCase().match(/bx\d/)) {
-                payload.push(this.key("Bx"))
+                payload.push(this.key("Bx"));
                 // Press the number for the 3rd character
                 payload.push(this.key(waypoint.name[2]));
                 waypointCounter--;

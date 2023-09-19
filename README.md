@@ -37,6 +37,10 @@ Can also be created directly using shortcut Ctrl+Shift+A
 * Points named "M" or "Additional" are created as target waypoints (Shortcut Ctrl+Shift+A)
 * Points named "Bx1" to "Bx9" are created as markpoints (and don't fall into B1-9 range), no shortcut key.
 
+For getting the QFE of the target point without a kneeboard, you can use methods mentioned in this video from xxJohnxx [What is QFE?](https://youtu.be/DEovtSLiUsg)
+* On runway, set backup altimeter to show airport's altitude ASL, its hPa is your QNH.
+* Note the altitude in meters of the target, use formula QFE = tgt_alt / 9.3 + QNH
+
 
 ## How to install?
 1. Download the latest zip file from the Releases section, and extract it. 
