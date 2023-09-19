@@ -9,7 +9,6 @@ const waypointsSlice = createSlice({
   reducers: {
     addDcsWaypoint(state, action) {
       const payload = action.payload;
-
       // If name is provided, use it. Otherwise, use default name.
       let nameTxt = `Waypoint ${state.idCounter}`;
       if (payload.name) { nameTxt = payload.name; }

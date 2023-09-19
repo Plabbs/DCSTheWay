@@ -21,7 +21,7 @@ local Crosshair =
     crosshairWindow = nil,
 
     address = '127.0.0.1',
-    port = 64880,
+    port = 42068,
     server = nil,
 }
 
