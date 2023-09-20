@@ -1,5 +1,5 @@
 const path = require("path");
-const {app, session, ipcMain} = require("electron");
+const {app} = require("electron");
 const isDev = require("electron-is-dev");
 const UDPListener = require("./UDPListener.js");
 const TCPSender = require("./TCPSender");
@@ -7,6 +7,7 @@ const SelectionHandler = require("./SelectionHandler.js");
 const UserPreferenceHandler = require("./userPreferenceHandler");
 const MainWindow = require("./MainWindow.js");
 const {uIOhook, UiohookKey} = require("uiohook-napi");
+const { default: installExtension, REDUX_DEVTOOLS} = require('electron-devtools-installer');
 
 let mainWindow;
 let udpListener;
@@ -14,21 +15,25 @@ let selectionHandler;
 let tcpSender;
 let userPreferenceHandler;
 
-function createWindow() {
+async function createWindow() {
     mainWindow = new MainWindow();
-    mainWindow.loadURL(isDev ? "http://localhost:3000" : `file://${path.join(__dirname, "../build/index.html")}`);
+    if (isDev) {
+        const options = {
+            loadExtensionOptions: { allowFileAccess: true },
+        };
+        await installExtension(
+            REDUX_DEVTOOLS,
+            options
+        );
+        mainWindow.webContents.openDevTools({mode: "detach"});
+    }
+    mainWindow.loadURL(
+        isDev
+            ? "http://localhost:3000"
+            : `file://${path.join(__dirname, "../build/index.html")}`
+    );
 
     mainWindow.on("closed", () => app.quit());
-    if (isDev) {
-        //Open the DevTools.
-        mainWindow.webContents.openDevTools({mode: "detach"});
-        session.defaultSession.loadExtension(
-            "C:\\Users\\ardro\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\fmkadmapgofadopljbjfkapdkoienihi\\4.27.2_0"
-        );
-        session.defaultSession.loadExtension(
-            "C:\\Users\\ardro\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\lmhkpmbekcpmknklioeibfkpmmfibljd\\3.0.19_0"
-        );
-    }
 }
 
 const isTheOnlyInstance = app.requestSingleInstanceLock();

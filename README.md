@@ -17,8 +17,12 @@ Supported modules:
 * AV8BNA Harrier
 * Ka-50 Blackshark
 * AH-64D Apache (Pilot and CP/G)
+<<<<<<< HEAD
 * AJS-37 Viggen
 
+=======
+* Mirage F1EE
+>>>>>>> upstream/main
  
 Multiplayer is supported as long as the server has Player Exports turned on (most servers do).
 
@@ -43,9 +47,14 @@ For getting the QFE of the target point without a kneeboard, you can use methods
 
 
 ## How to install?
+<<<<<<< HEAD
 1. Download the latest zip file from the Releases section, and extract it. 
 2. Copy everything in `Scripts` folder from the folder you just extracted into `Users/YourUsername/Saved Games/DCS/Scripts`. The `DCS` folder name may be `DCS.openbeta` if you are on the openbeta version of the game. If you are on Steam, the name will always be just `DCS`.
 
+=======
+1. Download the latest zip file from the Releases section [found here](https://github.com/aronCiucu/DCSTheWay/releases), and extract it. 
+2. Copy the `TheWay.lua` file from the folder you just extracted into `Users/YourUsernameHere/Saved Games/DCS/Scripts`. The `DCS` folder name may be `DCS.openbeta` if you are on the openbeta version of the game. If you are on Steam, the name will always be just `DCS`.
+>>>>>>> upstream/main
 3. Edit the `Export.lua` file there and append this line at the end of the file, and save it:
   ```lua
   local TheWayLfs=require('lfs'); dofile(TheWayLfs.writedir()..'Scripts/TheWay.lua')
@@ -77,8 +86,10 @@ Make sure you have followed the install instructions to the letter, and that eve
 Check if the server you are flying on has Player Exports turned on. If it doesn't, this won't work! 
 ### Where is the app installed by default?
 TheWay files are installed in Windows at `C:\Users\USER\AppData\Local\Programs\theway`
-### None of my isses are shown here
-Worry not, feel free to message me on Discord (Doge#4634) or the ED Forums thread and we'll have it sorted!
+### How can I reset the module seat choice after I've ticked "Remember my choice"?
+Go to `C:\Users\USER\AppData\Roaming\theway` and delete the `config.json` file. Now the dialogs will appear again.
+### None of my issues are shown here
+Worry not, feel free to message me on Discord (Doge4634) or the ED Forums thread, and we'll have it sorted!
 
 ## Credits
 Special thanks to discord users: kukiric, Bepis, the88tench, okopanja, and the ED Forums users for their suggestions and help.

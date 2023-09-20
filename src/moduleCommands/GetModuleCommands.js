@@ -11,9 +11,10 @@ import ajs37 from "./ajs37";
 
 export default function getModuleCommands(module, waypoints) {
     switch (module) {
-        case "F-15ESE":
-        case "F-15ESE_pilot":
-        case "F-15ESE_wso":
+        case "F-15ESE_pilotA":
+        case "F-15ESE_wsoA":
+        case "F-15ESE_pilotB":
+        case "F-15ESE_wsoB":
             f15e.slotVariant = module;
             return f15e.createButtonCommands(waypoints);
         case "F-16C_50":
@@ -32,7 +33,6 @@ export default function getModuleCommands(module, waypoints) {
         case "EA-18G": {
             return fa18.createButtonCommands(waypoints);
         }
-        case "AH-64D_BLK_II":
         case "AH-64D_BLK_IIpilot": {
             ah64.slotVariant = "AH-64D_BLK_IIpilot";
             return ah64.createButtonCommands(waypoints);

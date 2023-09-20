@@ -67,29 +67,25 @@ function App() {
             );
             console.log("additional point saved");
         });
-        ipcRenderer.on("transferWaypoints", () => {
-            handleTransfer();
-        });
-    }, []);
+        ipcRenderer.on("transferWaypoints", handleTransfer);
+        return () => {
+            ipcRenderer.removeAllListeners("saveWaypoint");
+            ipcRenderer.removeAllListeners("transferWaypoints");
+        }
+    }, [userPreferences]);
 
     const handleTransfer = async () => {
-        const moduleWaypoints = ConvertModuleWaypoints(dcsWaypointsRef.current, moduleRef.current);
-        let chosenSeat;
-        if (areDialogsHidden()) {
-            chosenSeat = moduleRef.current;
-        } else {
-            chosenSeat = await askUserAboutSeat(moduleRef.current);
-        }
+        const moduleWaypoints = ConvertModuleWaypoints(
+            dcsWaypointsRef.current,
+            moduleRef.current
+        );
+        const chosenSeat = await askUserAboutSeat(moduleRef.current, userPreferences);
         const commands = GetModuleCommands(chosenSeat, moduleWaypoints);
         ipcRenderer.send("transfer", commands);
     };
 
     const handleFileSave = () => {
-        ipcRenderer.send("saveFile", JSON.stringify(dcsWaypoints), module);
-    };
-
-    const areDialogsHidden = () => {
-        return userPreferences["hideDialogs"] || false;
+        ipcRenderer.send("saveFile", JSON.stringify(dcsWaypoints));
     };
 
     return (
