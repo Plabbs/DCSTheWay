@@ -13,16 +13,12 @@ Supported modules:
 * F/A-18C (& Superbug FA-18E/F/G) 
 * A-10C and A-10C2
 * Mirage 2000
-* Mirage F1 EE
 * AV8BNA Harrier
 * Ka-50 Blackshark
 * AH-64D Apache (Pilot and CP/G)
-<<<<<<< HEAD
+* Mirage F1EE
 * AJS-37 Viggen
 
-=======
-* Mirage F1EE
->>>>>>> upstream/main
  
 Multiplayer is supported as long as the server has Player Exports turned on (most servers do).
 
@@ -42,19 +38,14 @@ Can also be created directly using shortcut Ctrl+Shift+A
 * Points named "Bx1" to "Bx9" are created as markpoints (and don't fall into B1-9 range), no shortcut key.
 
 For getting the QFE of the target point without a kneeboard, you can use methods mentioned in this video from xxJohnxx [What is QFE?](https://youtu.be/DEovtSLiUsg)
-* On runway, set backup altimeter to show airport's altitude ASL, its hPa is your QNH.
+* On runway, set backup altimeter to show airport's altitude above sea level, its hPa is now your QNH.
 * Note the altitude in meters of the target, use formula QFE = tgt_alt / 9.3 + QNH
 
 
 ## How to install?
-<<<<<<< HEAD
 1. Download the latest zip file from the Releases section, and extract it. 
 2. Copy everything in `Scripts` folder from the folder you just extracted into `Users/YourUsername/Saved Games/DCS/Scripts`. The `DCS` folder name may be `DCS.openbeta` if you are on the openbeta version of the game. If you are on Steam, the name will always be just `DCS`.
 
-=======
-1. Download the latest zip file from the Releases section [found here](https://github.com/aronCiucu/DCSTheWay/releases), and extract it. 
-2. Copy the `TheWay.lua` file from the folder you just extracted into `Users/YourUsernameHere/Saved Games/DCS/Scripts`. The `DCS` folder name may be `DCS.openbeta` if you are on the openbeta version of the game. If you are on Steam, the name will always be just `DCS`.
->>>>>>> upstream/main
 3. Edit the `Export.lua` file there and append this line at the end of the file, and save it:
   ```lua
   local TheWayLfs=require('lfs'); dofile(TheWayLfs.writedir()..'Scripts/TheWay.lua')
