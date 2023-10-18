@@ -4,7 +4,6 @@ class ajs37 {
         NAVIGATION: 12,
         NAV_PANEL: 23,
     };
-    // refactor, remove delay attribute and move to keypadPress
 
     static keys = {
         0: {device: this.device.NAVIGATION, code: 3020, activate: 1, addDepress: "true"},

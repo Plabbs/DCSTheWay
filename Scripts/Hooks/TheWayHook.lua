@@ -104,13 +104,6 @@ function Crosshair:createCrosshairWindow()
     local x = screenWidth / 2 - 16
     local y = screenHeigt / 2 - 16
     self.crosshairWindow:setBounds(math.floor(x), math.floor(y), 32, 32)
-    -- -- Hotkey to toggle the crosshair moved to the main JavaScript program
-    -- self.dialog:addHotKeyCallback(
-    --     "Ctrl+Shift+f",
-    --     function()
-    --         self:toggle()
-    --     end
-    -- )
 
     self:log("Crosshair window created")
 
@@ -129,7 +122,7 @@ local function initCrosshair()
         else
             -- Only check for incoming connections periodically to avoid performance issues
             local now = socket.gettime()
-            if lastCheckTime == nil or now - lastCheckTime > 0.8 then
+            if lastCheckTime == nil or now - lastCheckTime > 0.75 then
                 Crosshair:checkForIncomingConnections();
                 lastCheckTime = now
             end
