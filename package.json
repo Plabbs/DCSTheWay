@@ -1,6 +1,6 @@
 {
   "name": "theway",
-  "version": "2.2.0-Plabbs-1",
+  "version": "2.2.Plabbs-3",
   "private": true,
   "main": "electron/electron.js",
   "description": "Simple DCS waypoint capture and entry tool, using F10 map and in-flight keypad macros",

@@ -18,7 +18,6 @@ Supported modules:
 * AH-64D Apache (Pilot and CP/G)
 * Mirage F1EE
 * AJS-37 Viggen
-
  
 Multiplayer is supported as long as the server has Player Exports turned on (most servers do).
 
@@ -29,7 +28,7 @@ The special functionality is accessed using naming patterns.  They are not case 
 ### Mirage 2000C
 * Desired heading<br>If the name of the waypoint is 3 digits (e.g. 090) then it interpreted as desired heading (Route Désirée) which can be seen using the RD button on the PCA top row.
 * Creation of offset waypoints (BAD)<br>
-Create a waypoint after another and name it "BAD" or "Additional" and then it will be created as an offset for the previous waypoint.  This will allow toss bombing CCRP target.
+Create a waypoint after another and name it "BAD" or "Additional" and then it will be created as an offset for the previous waypoint.  This will enable toss bombing a target using CCRP.
 Can also be created directly using shortcut Ctrl+Shift+A
 
 ### AJS 37 Viggen
@@ -37,9 +36,14 @@ Can also be created directly using shortcut Ctrl+Shift+A
 * Points named "M" or "Additional" are created as target waypoints (Shortcut Ctrl+Shift+A)
 * Points named "Bx1" to "Bx9" are created as markpoints (and don't fall into B1-9 range), no shortcut key.
 
+### Calculating QFE (for Viggen and Mirage F1)
 For getting the QFE of the target point without a kneeboard, you can use methods mentioned in this video from xxJohnxx [What is QFE?](https://youtu.be/DEovtSLiUsg)
-* On runway, set backup altimeter to show airport's altitude above sea level, its hPa is now your QNH.
-* Note the altitude in meters of the target, use formula QFE = tgt_alt / 9.3 + QNH
+1. On runway, set backup altimeter to show airport's altitude above sea level, its airpressure is now your QNH.
+2. Note the altitude of the target, use formulas for ballpark figures:
+   * _Meters:_  QFE = QNH - tgt_alt / 9
+   * _Feet:_ &nbsp; &nbsp; QFE = QNH - tgt_alt / 30
+
+_Note that these are very rough estimates for QFE._
 
 
 ## How to install?
@@ -79,18 +83,12 @@ Check if the server you are flying on has Player Exports turned on. If it doesn'
 TheWay files are installed in Windows at `C:\Users\USER\AppData\Local\Programs\theway`
 ### How can I reset the module seat choice after I've ticked "Remember my choice"?
 Go to `C:\Users\USER\AppData\Roaming\theway` and delete the `config.json` file. Now the dialogs will appear again.
-### None of my issues are shown here
-Worry not, feel free to message me on Discord (Doge4634) or the ED Forums thread, and we'll have it sorted!
 
 ## Credits
-Special thanks to discord users: kukiric, Bepis, the88tench, okopanja, and the ED Forums users for their suggestions and help.
-Thanks to our GitHub contributors for supporting new modules. 
-Images provided by:
-* F15E, F/A-18C: Coffee :coffee:
-* IDF F16s, Superbug F18s: Hayds_93
+This is a fork of 
+[DCSTheWay - AronCiucu](https://github.com/aronCiucu/DCSTheWay)
 
 ## For nerds
-The application is built using React.js and Electron. If you'd like to contribute, simply clone the repository and run `npm install`, then `npm run react-start` to start the React page, and `npm run electron-dev` to fire up the Electron side of things.
-If you'd like to build/package the code for production, run `npm run package` and check the `dist` folder for the created installer. 
+See [README_Technical.md](.\README_Technical)
 
 This is the way.
