@@ -8,6 +8,7 @@ import m2000 from "./m2000";
 import av8b from "./av8b";
 import ka50 from "./ka50";
 import ajs37 from "./ajs37";
+import jf17 from "./jf17";
 
 export default function getModuleCommands(module, waypoints) {
     switch (module) {
@@ -60,6 +61,9 @@ export default function getModuleCommands(module, waypoints) {
         }
         case "AJS37": {
             return ajs37.createButtonCommands(waypoints);
+        }
+        case "JF-17": {
+            return jf17.createButtonCommands(waypoints);
         }
         default:
             return [];

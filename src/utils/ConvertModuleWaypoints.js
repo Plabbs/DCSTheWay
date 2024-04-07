@@ -85,6 +85,42 @@ const convert = (dcsWaypoints, module) => {
       }
       return waypoints;
     }
+    case "JF-17": {
+      // lat  00.00.000 DMS
+      // long 000.00.000 DMS
+      let waypoints = [];
+      for (const dcsWaypoint of dcsWaypoints) {
+        const name = dcsWaypoint.name;
+        const id = dcsWaypoint.id;
+        const dmsLat = Convertors.decimalToDMS(dcsWaypoint.lat);
+        const dmsLong = Convertors.decimalToDMS(dcsWaypoint.long);
+        const lat =
+          dmsLat.deg.toString().padStart(2, "0") + "." +
+          dmsLat.min.toString().padStart(2, "0") + "." +
+          dmsLat.sec.toString().padStart(2, "0") + "0";
+        const long =
+          dmsLong.deg.toString().padStart(3, "0") + "." +
+          dmsLong.min.toString().padStart(2, "0") + "." +
+          dmsLong.sec.toString().padStart(2, "0") + "0";
+        const elev = dcsWaypoint.elev.toFixed(0).toString();
+        const latHem = dcsWaypoint.lat > 0 ? "N" : "S";
+        const longHem = dcsWaypoint.long > 0 ? "E" : "W";
+        const x = dcsWaypoint.x;
+        const z = dcsWaypoint.z;
+        waypoints.push({
+          name,
+          id,
+          lat,
+          long,
+          elev,
+          latHem,
+          longHem,
+          x,
+          z,
+        });
+      }
+      return waypoints;
+    }
     case "AJS37": {
       // lat  000000 DMS
       // long 000000 DMS

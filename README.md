@@ -18,12 +18,13 @@ Supported modules:
 * AH-64D Apache (Pilot and CP/G)
 * Mirage F1EE
 * AJS-37 Viggen
+* JF-17 Thunder
  
 Multiplayer is supported as long as the server has Player Exports turned on (most servers do).
 
 ## Special functionality per module
 
-The special functionality is accessed using naming patterns.  They are not case sensitive so "Additional" and "additional" are equivalent.
+The special functionality is accessed using naming patterns.  <b>They are not case sensitive so "Additional" and "additional" are equivalent.</b>
 
 ### Mirage 2000C
 * Desired heading<br>If the name of the waypoint is 3 digits (e.g. 090) then it interpreted as desired heading (Route Désirée) which can be seen using the RD button on the PCA top row.
@@ -35,6 +36,16 @@ Can also be created directly using shortcut Ctrl+Shift+A
 * Waypoints are processed in order and assigned to B1 up to B9  (Shortcut Ctrl+Shift+S)
 * Points named "M" or "Additional" are created as target waypoints (Shortcut Ctrl+Shift+A)
 * Points named "Bx1" to "Bx9" are created as markpoints (and don't fall into B1-9 range), no shortcut key.
+
+### JF-17 Thunder
+* Numbers are extracted from waypoint name (1 to 39).  If no number is found then the previous waypoint number is incremented by 1.
+* * 01-29 Normal waypoint  (Ctrl+Shift+A)
+* * 30-35 Route point (Steerpoints for anti-ship missiles)
+* * 36-39 Pre-planned points (Precision guidance for GPS weapons)
+* DTC F10 map naming convention can be used
+* * Points named "PP1" to "PP4" or "Additional" are created as pre-planned points (Shortcut Ctrl+Shift+A)
+* * Points named "RP1" to "RP6" are created as route points , no shortcut key.
+<p> For example list of 4 points named "WPT1", "waypoint2", "3", " " would be created as waypoints 01 to 04
 
 ### Calculating QFE (for Viggen and Mirage F1)
 For getting the QFE of the target point without a kneeboard, you can use methods mentioned in this video from xxJohnxx [What is QFE?](https://youtu.be/DEovtSLiUsg)

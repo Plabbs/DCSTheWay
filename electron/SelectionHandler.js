@@ -87,7 +87,7 @@ class SelectionHandler {
         }
         // Send notification to TheWayHook.lua to show/hide crosshair
         const message = Buffer.from(msg, "utf8");
-        socket.send(message, 0, message.length, 42068, "127.0.0.1", (err) => {
+        socket.send(message, 0, message.length, 41068, "127.0.0.1", (err) => {
             if (err) {
                 console.error("Error sending the message:", err);
                 socket.close();
