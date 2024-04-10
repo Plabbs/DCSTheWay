@@ -9,7 +9,7 @@ class UDPListener {
         mainWindow.webContents.send("dataReceived", "" + msg);
       } catch (e) {}
     });
-    socket.bind(42069);
+    socket.bind(41069);
   }
 }
 
